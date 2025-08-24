@@ -1,174 +1,1048 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Brabim's Portfolio</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brabim Portfolio Terminal</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap');
 
-    body {
-      margin: 0;
-      background-color: #0d0d0d;
-      color: #00ff99;
-      font-family: 'Share Tech Mono', monospace;
-      display: flex;
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    background: linear-gradient(135deg, #0f111a 0%, #1a1d29 50%, #0f111a 100%);
+    color: #00ff99;
+    font-family: 'Fira Code', 'Courier New', monospace;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+
+  /* Animated background particles */
+  .bg-particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .particle {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: rgba(0, 255, 153, 0.3);
+    border-radius: 50%;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.3; }
+    50% { transform: translateY(-20px) rotate(180deg); opacity: 0.8; }
+  }
+
+  #terminal {
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #00ff99 transparent;
+  }
+
+  #terminal::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  #terminal::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  #terminal::-webkit-scrollbar-thumb {
+    background: #00ff99;
+    border-radius: 3px;
+  }
+
+  input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #00ff99;
+    width: 100%;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  input::placeholder {
+    color: rgba(0, 255, 153, 0.4);
+    font-style: italic;
+  }
+
+  /* Enhanced ID Card Container */
+  .id-card-container {
+    position: relative;
+    width: 83%;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 30px;
+    z-index: 10;
+  }
+
+  /* Premium Ribbons with reflections */
+  .ribbon-left, .ribbon-right {
+    position: absolute;
+    width: 14px;
+    height: 140px;
+    background: linear-gradient(45deg, 
+      #1e40af 0%, 
+      #3b82f6 25%, 
+      #60a5fa 50%, 
+      #93c5fd 75%, 
+      #dbeafe 100%);
+    border-radius: 7px;
+    top: -30px;
+    box-shadow: 
+      0 4px 8px rgba(0,0,0,0.4),
+      0 8px 16px rgba(0,0,0,0.2),
+      inset 0 2px 4px rgba(255,255,255,0.3),
+      inset 0 -2px 4px rgba(0,0,0,0.2);
+    animation: ribbonDrop 2.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+    opacity: 0;
+    transform-origin: top center;
+  }
+
+  .ribbon-left {
+    left: 50px;
+    transform: rotate(-12deg);
+    animation-delay: 0.3s;
+  }
+
+  .ribbon-right {
+    right: 50px;
+    transform: rotate(12deg);
+    animation-delay: 0.5s;
+  }
+
+  /* Enhanced ribbon holes with depth */
+  .ribbon-left::before, .ribbon-right::before {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: #0f111a;
+    border-radius: 50%;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 
+      0 2px 4px rgba(0,0,0,0.5),
+      inset 0 1px 2px rgba(0,0,0,0.8);
+  }
+
+  .ribbon-left::after, .ribbon-right::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: #0f111a;
+    border-radius: 50%;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 
+      0 2px 4px rgba(0,0,0,0.5),
+      inset 0 1px 2px rgba(0,0,0,0.8);
+  }
+
+  /* Ultra-realistic ID Card */
+  .id-card {
+    width: 260px;
+    height: 420px;
+    background: linear-gradient(135deg, 
+      #ffffff 0%, 
+      #f8fafc 30%, 
+      #e2e8f0 70%, 
+      #cbd5e1 100%);
+    border: 3px solid #94a3b8;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 20px;
+    box-shadow: 
+      0 20px 40px rgba(0,0,0,0.6),
+      0 10px 20px rgba(0,0,0,0.4),
+      0 5px 10px rgba(0,0,0,0.3),
+      inset 0 2px 4px rgba(255,255,255,0.9),
+      inset 0 -2px 4px rgba(0,0,0,0.1);
+    transform-origin: top center;
+    animation: cardPopIn 2.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+    opacity: 0;
+    animation-delay: 1.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Enhanced holographic effect */
+  .id-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(80deg, 
+      transparent 0%, 
+      rgba(255,255,255,0.6) 30%,
+      rgba(0,255,153,0.3) 50%,
+      rgba(255,255,255,0.6) 70%,
+      transparent 100%);
+    animation: holographicSweep 4s ease-in-out infinite;
+    animation-delay: 4s;
+    z-index: 1;
+  }
+
+  /* Micro-pattern overlay for authenticity */
+  .id-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+      radial-gradient(circle at 1px 1px, rgba(0,0,0,0.05) 1px, transparent 0);
+    background-size: 8px 8px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Professional photo frame */
+  .photo-frame {
+    width: 130px;
+    height: 760px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 4px solid #e2e8f0;
+    margin-bottom: 10px;
+    box-shadow: 
+      0 6px 12px rgba(0,0,0,0.3),
+      0 3px 6px rgba(0,0,0,0.2),
+      inset 0 2px 4px rgba(255,255,255,0.6),
+      inset 0 -2px 4px rgba(0,0,0,0.1);
+    position: relative;
+    z-index: 2;
+  }
+
+  .id-card img {
+    width: 200%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .photo-frame:hover img {
+    transform: scale(1.25);
+  }
+
+  .id-card h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 0px;
+    font-family: 'Arial Black', sans-serif;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .id-card .title {
+    font-size: 1.1rem;
+    color: #475569;
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .id-card .id-number {
+    font-size: 0.9rem;
+    color: #64748b;
+    font-family: 'Fira Code', monospace;
+    background: linear-gradient(135deg, rgba(0,0,0,0.05), rgba(0,0,0,0.1));
+    padding: 6px 12px;
+    border-radius: 6px;
+    margin-top: 12px;
+    border: 1px solid rgba(0,0,0,0.1);
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Enhanced security features */
+  .security-strip {
+    position: absolute;
+    bottom: 25px;
+    left: 20px;
+    right: 20px;
+    height: 12px;
+    background: linear-gradient(90deg, 
+      #ef4444 0%, 
+      #f59e0b 20%, 
+      #10b981 40%, 
+      #3b82f6 60%, 
+      #8b5cf6 80%,
+      #ec4899 100%);
+    border-radius: 6px;
+    opacity: 0.8;
+    box-shadow: 
+      0 2px 4px rgba(0,0,0,0.2),
+      inset 0 1px 2px rgba(255,255,255,0.3);
+    z-index: 2;
+  }
+
+  /* Company/Institution logo area */
+  .logo-area {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(45deg, #00ff99, #00cc77);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: white;
+    font-size: 14px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    z-index: 2;
+  }
+
+  /* Enhanced animations */
+  @keyframes ribbonDrop {
+    0% { 
+      transform: translateY(-300px) rotate(-45deg); 
+      opacity: 0; 
+    }
+    60% { 
+      transform: translateY(25px) rotate(-12deg); 
+      opacity: 1; 
+    }
+    80% { 
+      transform: translateY(-5px) rotate(-12deg); 
+      opacity: 1; 
+    }
+    100% { 
+      transform: translateY(0) rotate(-12deg); 
+      opacity: 1; 
+    }
+  }
+
+  @keyframes cardPopIn {
+    0% { 
+      transform: scale(0) rotate(270deg); 
+      opacity: 0; 
+    }
+    40% { 
+      transform: scale(1.15) rotate(-15deg); 
+      opacity: 0.7; 
+    }
+    70% { 
+      transform: scale(0.9) rotate(8deg); 
+      opacity: 1; 
+    }
+    85% { 
+      transform: scale(1.02) rotate(-3deg); 
+      opacity: 1; 
+    }
+    100% { 
+      transform: scale(1) rotate(0deg); 
+      opacity: 1; 
+    }
+  }
+
+  @keyframes holographicSweep {
+    0% { left: -100%; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { left: 100%; opacity: 0; }
+  }
+
+  /* Terminal enhancements */
+  .terminal-header {
+    background: linear-gradient(90deg, #1a1d29, #2a2d39);
+    border-bottom: 2px solid #00ff99;
+    padding: 8px 16px;
+    border-radius: 8px 8px 0 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .terminal-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+
+  .dot-red { background: #ef4444; }
+  .dot-yellow { background: #f59e0b; }
+  .dot-green { background: #10b981; }
+
+  .nav-links {
+    background: rgba(0, 255, 153, 0.05);
+    border-radius: 8px;
+    padding: 8px 12px;
+    border: 1px solid rgba(0, 255, 153, 0.2);
+  }
+
+  .nav-links span {
+    transition: all 0.3s ease;
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+
+  .nav-links span:hover {
+    background: rgba(0, 255, 153, 0.1);
+    text-shadow: 0 0 8px #00ff99;
+  }
+
+  /* Terminal blinking cursor */
+  .blink {
+    animation: blink 1.2s infinite;
+  }
+
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+
+  /* Command prompt enhancement */
+  .prompt-line {
+    background: rgba(0, 255, 153, 0.05);
+    border-radius: 8px;
+    padding: 8px 12px;
+    border: 1px solid rgba(0, 255, 153, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .prompt-symbol {
+    color: #00ff99;
+    font-weight: bold;
+    text-shadow: 0 0 4px #00ff99;
+  }
+
+  /* Typing effect */
+  .typing-effect {
+    border-right: 2px solid #00ff99;
+    animation: typing 1s steps(20) infinite;
+  }
+
+  @keyframes typing {
+    0%, 50% { border-color: #00ff99; }
+    51%, 100% { border-color: transparent; }
+  }
+
+  /* Mobile responsiveness */
+  @media (max-width: 768px) {
+    .main-container {
       flex-direction: column;
-      min-height: 100vh;
-      justify-content: center;
-      align-items: center;
-      padding: 2rem;
-      user-select: none;
+      height: auto;
     }
-
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 0.2rem;
-      text-shadow: 0 0 10px #00ff99, 0 0 20px #00ff99;
-    }
-
-    h2 {
-      color: #ff0066;
-      margin-top: 0;
-      margin-bottom: 1rem;
-      text-shadow: 0 0 5px #ff0066;
-    }
-
-    .glitch {
-      position: relative;
-      color: #00ff99;
-      font-weight: 900;
-      font-size: 1.5rem;
-      animation: glitch 1.5s infinite;
-    }
-
-    @keyframes glitch {
-      0% {
-        text-shadow:
-          2px 0 #ff0066,
-          -2px 0 #00ffff;
-      }
-      20% {
-        text-shadow:
-          -2px 0 #ff0066,
-          2px 0 #00ffff;
-      }
-      40% {
-        text-shadow:
-          2px 2px #ff0066,
-          -2px -2px #00ffff;
-      }
-      60% {
-        text-shadow:
-          -2px 2px #ff0066,
-          2px -2px #00ffff;
-      }
-      80% {
-        text-shadow:
-          2px -2px #ff0066,
-          -2px 2px #00ffff;
-      }
-      100% {
-        text-shadow:
-          2px 0 #ff0066,
-          -2px 0 #00ffff;
-      }
-    }
-
-    .container {
-      max-width: 700px;
+    
+    .id-section {
       width: 100%;
-      background: #111;
-      padding: 2rem 3rem;
-      border-radius: 12px;
-      box-shadow: 0 0 30px #00ff99;
+      min-height: 300px;
     }
-
-    p {
-      font-size: 1.1rem;
-      line-height: 1.5;
-      margin-bottom: 1.5rem;
-      color: #aaffcc;
+    
+    .terminal-section {
+      width: 100%;
+      min-height: 400px;
     }
-
-    a {
-      color: #ff0066;
-      text-decoration: none;
-      font-weight: bold;
-      transition: color 0.3s ease;
+    
+    .id-card {
+      width: 220px;
+      height: 280px;
     }
-
-    a:hover {
-      color: #00ff99;
-      text-shadow: 0 0 8px #00ff99;
-    }
-
-    ul {
-      list-style-type: none;
-      padding: 0;
-      margin-bottom: 1.5rem;
-    }
-
-    ul li {
-      padding: 0.5rem 0;
-      border-bottom: 1px solid #00ff9955;
-    }
-
-    footer {
-      margin-top: 3rem;
-      font-size: 0.9rem;
-      color: #444;
-      user-select: text;
-    }
-
-    .btn {
-      display: inline-block;
-      margin-top: 1rem;
-      padding: 0.5rem 1.5rem;
-      border: 2px solid #00ff99;
-      border-radius: 8px;
-      color: #00ff99;
-      text-transform: uppercase;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      user-select: none;
-    }
-
-    .btn:hover {
-      background: #00ff99;
-      color: #111;
-      box-shadow: 0 0 15px #00ff99;
-    }
-  </style>
+  }
+</style>
 </head>
-<body>
-  <div class="container">
-    <h1>Brabim</h1>
-    <h2 class="glitch">CyberSec & Enthusiast</h2>
+<body class="min-h-screen flex items-center justify-center p-4">
 
-    <p>Hey, I’m <strong>Brabim</strong>, a passionate cyber sec student diving deep into cybersecurity, data science, and all things tech. Wanna check out my projects? Scroll down!</p>
+<!-- Animated background particles -->
+<div class="bg-particles" id="particles"></div>
 
-    <h3>Skills & Tools</h3>
-    <ul>
-      <li>Python | React Native | Flask</li>
-      <li>Penetration Testing | Network Security</li>
-      <li>Linux (Kali, Debian, Fedora, Arch)</li>
-    </ul>
+<div class="main-container w-full max-w-7xl h-[85vh] flex border-2 border-green-500 rounded-2xl overflow-hidden shadow-2xl relative z-10" style="box-shadow: 0 0 50px rgba(0, 255, 153, 0.3);">
 
-    <h3>Projects</h3>
-    <ul>
-      <li><a href="https://github.com/0x4mn3sia-n0d3x008/mac-auto-spoof" target="_blank" rel="noopener noreferrer">Mac Auto Spoof</a></li>
-      <li><a href="https://github.com/0x4mn3sia-n0d3x008/retro-vault" target="_blank" rel="noopener noreferrer">Retro Vault Password Manager</a></li>
-      <li><a href="https://github.com/0x4mn3sia-n0d3x008/vanish_node" target="_blank" rel="noopener noreferrer">Vanish Portal</a></li>
-    </ul>
-
-    <a href="https://signal.me/#eu/iGTHsyF2HbSUNLnWFWT2efVONiUPBpVBAGBJMmGv7OWve67adHpC3IAu1TEUrSwx" class="btn">Hit Me Up At Signal!</a>
-    <a href="mailto:brabimpratap999@gmail.com" class="btn">Email Me</a>
-    <br />   
-   <a href="https://github.com/0x4mn3sia-n0d3x008" target="_blank" rel="noopener noreferrer" class="btn" style="margin-top: 1rem;">Check My GitHub</a>
+  <!-- Left ID Card Section -->
+  <div class="id-section w-1/3 bg-gradient-to-br from-[#11141f] to-[#1a1d29] flex flex-col items-center justify-start p-6">
+    <div class="id-card-container">
+      <!-- Premium ribbons -->
+      <div class="ribbon-left"></div>
+      <div class="ribbon-right"></div>
+      
+      <!-- Ultra-realistic ID Card -->
+      <div class="id-card">
+        <div class="logo-area">BG</div>
+        <div class="photo-frame">
+          <img src="brabim.png" alt="Brabim" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22150%22 height=%22150%22><rect width=%22100%%22 height=%22100%%22 fill=%22%23e2e8f0%22/><text x=%2250%%22 y=%2250%%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%2364748b%22 font-family=%22Arial%22 font-size=%2216%22>PHOTO</text></svg>'">
+        </div>
+        <h2>BRABIM GAUTAM</h2>
+        <p class="title">Cyber Security Student</p>
+        <p class="id-number">ID: #BRB2025-DEV</p>
+        <div class="security-strip"></div>
+      </div>
+    </div>
   </div>
 
-  <footer>© 2025 Brabim — Made with vibes and caffeine ☕</footer>
+  <!-- Right Terminal Section -->
+  <div class="terminal-section w-2/3 bg-gradient-to-br from-[#0f111a] to-[#1a1d29] flex flex-col">
+    
+    <!-- Terminal Header -->
+    <div class="terminal-header">
+      <div class="terminal-dot dot-red"></div>
+      <div class="terminal-dot dot-yellow"></div>
+      <div class="terminal-dot dot-green"></div>
+      <span class="ml-4 text-green-400 font-semibold">brabim-portfolio-v2.1</span>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-links m-4 mb-2 text-green-400 text-sm flex flex-wrap gap-2">
+      <span class="cursor-pointer" onclick="runCommand('help')">help</span> •
+      <span class="cursor-pointer" onclick="runCommand('info-brabim')">info</span> •
+      <span class="cursor-pointer" onclick="runCommand('projects')">projects</span> •
+      <span class="cursor-pointer" onclick="runCommand('skills')">skills</span> •
+      <span class="cursor-pointer" onclick="runCommand('contact')">contact</span> •
+      <span class="cursor-pointer" onclick="clearTerminal()">clear</span>
+    </div>
+
+    <!-- Terminal Output -->
+    <div class="flex-1 overflow-y-auto text-green-300 whitespace-pre-wrap leading-relaxed px-4" id="terminal">
+╔═══════════════════════════════════════════════════════════════ ═╗
+║                  🚀 BRABIM'S CYBER PORTFOLIO 🚀                 ║
+║                                                                ║
+║  ┌─ SYSTEM STATUS ────────────────────────────────────────┐     ║
+║  │ 🟢 All systems operational                             │    ║
+║  │ 🔐 Security protocols: ACTIVE                          │     ║  
+║  │ 💻 Terminal access: GRANTED                            │    ║
+║  │ 🌐 Network status: CONNECTED                           │     ║
+║  └────────────────────────────────────────────────────────┘    ║
+║                                                                 ║
+║  Welcome, visitor! Type 'help' to explore my digital realm     ║
+╚═══════════════════════════════════════════════════════════════ ═╝
+    </div>
+
+    <!-- Enhanced Command Prompt -->
+    <div class="prompt-line m-4">
+      <span class="prompt-symbol">┌──(</span>
+      <span class="text-blue-400 font-semibold">brabim@cybersec</span>
+      <span class="prompt-symbol">)-[</span>
+      <span class="text-yellow-400">~/portfolio</span>
+      <span class="prompt-symbol">]</span>
+      <br>
+      <span class="prompt-symbol">└─$</span>
+      <input type="text" id="commandInput" placeholder="Enter command..." autofocus class="flex-1 ml-2">
+      <span class="text-green-400 blink">▊</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // Initialize terminal system
+  const terminal = document.getElementById("terminal");
+  const input = document.getElementById("commandInput");
+  let commandHistory = [];
+  let historyIndex = -1;
+
+  // Enhanced command database with rich content
+  const commands = {
+    "help": `
+╔═══════════════════════════════════════════════════════════════╗
+║                       🔧 COMMAND CENTER 🔧                   ║
+╠═══════════════════════════════════════════════════════════════╣
+║                                                               ║
+║  📋 AVAILABLE COMMANDS:                                       ║
+║  ┌─────────────────────────────────────────────────────────┐ ║
+║  │ help          → Display this help menu                 │ ║
+║  │ info-brabim   → Personal & professional details       │ ║
+║  │ projects      → Showcase of completed projects        │ ║
+║  │ skills        → Technical expertise & tools           │ ║
+║  │ contact       → Get in touch with me                  │ ║
+║  │ achievements  → Academic & professional achievements  │ ║
+║  │ timeline      → My journey timeline                   │ ║
+║  │ matrix        → Enter the digital matrix             │ ║
+║  │ clear         → Clear terminal screen                 │ ║
+║  └─────────────────────────────────────────────────────────┘ ║
+║                                                               ║
+║  💡 TIP: Commands are case-insensitive!                      ║
+║  💡 TIP: You can click on navigation links above!            ║
+╚═══════════════════════════════════════════════════════════════╝`,
+
+    "info-brabim": `
+🔥 BRABIM GAUTAM - CYBERSECURITY PROFILE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+👤 PERSONAL INFO:
+   ├── Name: Brabim Gautam
+   ├── Role: Cybersecurity Student & Developer
+   ├── Age: Digital Native (Gen Z)
+   ├── Location: Kathmandu, Nepal 🇳🇵
+   └── Status: Always learning, always evolving 
+
+🎯 PROFESSIONAL FOCUS:
+   ├── 🛡️  Cybersecurity Research & Analysis
+   ├── 🔐 Ethical Hacking & Penetration Testing
+   ├── 💻 Secure Web Development
+   ├── 🤖 AI/ML in Cybersecurity
+   └── 🌐 Digital Forensics
+
+💭 PHILOSOPHY:
+   "In a world of zeros and ones, I find infinite possibilities.
+    Every bug is a puzzle, every breach is a lesson,
+    every solution is a step towards a more secure digital future."
+
+🚀 MISSION:
+   Building a safer digital world, one line of code at a time.
+   Bridging the gap between security and usability.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`,
+
+    "projects": `
+🛠️  PROJECT PORTFOLIO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎨 INTERACTIVE PORTFOLIO TERMINAL
+   ├── Tech Stack: HTML5, CSS3, JavaScript, Tailwind CSS
+   ├── Features: Command-line interface, animated ID card
+   ├── Highlights: Case-insensitive commands, responsive design
+   └── Status: ✅ Complete & Deployed
+
+🔐 RETRO VAULT - PASSWORD MANAGER
+   ├── Tech Stack: Python, Flask, SQLite, AES Encryption
+   ├── Features: Secure password storage, retro UI design
+   ├── Highlights: Military-grade encryption, offline-first
+   ├── Status: 🔧 Prototype Released ✅
+   └── GitHub: github.com/0x4mn3sia-n0d3x008/Retro-Vault
+
+🌐 SECURE WEB APPLICATIONS
+   ├── Tech Stack: Python Flask
+   ├── Status: ⚡ Multiple Projects
+   └── Website: vanish-node.onrender.com
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`,
+
+    "skills": `
+⚡ TECHNICAL EXPERTISE MATRIX
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🚀 PROGRAMMING LANGUAGES:
+   ├── Python        ████████████████████ 95%
+   ├── JavaScript    ███████████████████  90%
+   ├── HTML/CSS      ████████████████████ 98%
+   ├── Bash/Shell    ██████████████████   85%
+   └── SQL           ████████████████     80%
+
+🛡️ CYBERSECURITY TOOLS:
+   ├── Nmap, Wireshark, Burp Suite
+   ├── Metasploit, OWASP ZAP, Nikto
+   ├── John the Ripper, Hashcat
+   └── Nessus, OpenVAS, Aircrack-ng
+
+⚙️ FRAMEWORKS & LIBRARIES:
+   ├── Flask/Django  ███████████████████  90%
+   ├── React.js      ████████████████     75%
+   ├── TensorFlow    █████████████        65%
+   └── Bootstrap     ████████████████████ 95%
+
+🔧 DEVELOPMENT TOOLS:
+   ├── Git/GitHub    ████████████████████ 95%
+   ├── Docker        ██████████████████   85%
+   ├── VS Code       ████████████████████ 100%
+   ├── Linux         ███████████████████  90%
+   └── VMware        ████████████████     80%
+
+🎯 SPECIALIZATION AREAS:
+   • 🔐 Ethical Hacking & Penetration Testing
+   • 🛡️  Vulnerability Assessment & Management
+   • 🌐 Web Application Security
+   • 🤖 AI/ML in Cybersecurity
+   • 📊 Digital Forensics & Incident Response
+
+💪 SOFT SKILLS:
+   • 🧩 Advanced Problem-Solving
+   • 🎨 Creative Security Solutions  
+   • 🤝 Team Collaboration & Leadership
+   • 📚 Rapid Learning & Adaptation
+   • 🗣️  Technical Communication
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`,
+
+    "contact": `
+📬 CONNECT WITH BRABIM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🌐 DIGITAL PRESENCE:
+   ┌────────────────────────────────────────────────────────────┐
+   │ 📧 Email      → brabimpratap999@gmail.com                  │
+   │ 💼 LinkedIn   → linkedin.com/in/brabim-gautam-246bb3291    │
+   │ 🐙 GitHub     → github.com/0x4mn3sia-n0d3x008              │
+   │ 🌟 Portfolio  → www.brabim.vercel.app                      │
+   │ 𖹭 Instagram   → https://www.instagram.com/__sim0n_riley    │
+   └────────────────────────────────────────────────────────────┘
+
+🤝 COLLABORATION OPPORTUNITIES:
+   ├── 🔐 Cybersecurity Research Projects
+   ├── 💻 Open Source Development
+   ├── 🎓 Educational Content Creation
+   ├── 🏆 Capture The Flag (CTF) Teams
+   └── 💡 Innovation & Startup Ideas
+
+💬 ALWAYS INTERESTED IN:
+   • Security vulnerability discussions
+   • Code review & best practices
+   • Emerging cybersecurity trends
+   • Ethical hacking methodologies
+   • Tech meetups & conferences
+   • Mentorship opportunities
+
+📱 RESPONSE TIME: Usually within 24 hours
+🕐 AVAILABILITY: Mon-Fri (9 AM - 8 PM NPT)
+🌍 TIME ZONE: Nepal Standard Time (UTC+5:45)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`,
+
+    "achievements": `
+🏆 ACHIEVEMENTS & CERTIFICATIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🏆 COMPETITIONS & CONTESTS:
+   ├── 🥈 Inter-College Hackathon - 2nd Place
+   └── 🥉 Bug Bounty Competition - Top 10
+
+💼 PROFESSIONAL RECOGNITION:
+   ├── 🔍 Discovered 3+ security vulnerabilities
+   └── 📺 Speaker at Local Tech Meetups
+
+🎖️ CERTIFICATIONS:
+   ├── 🛡️  Python Basics 
+   └── 🔐  Python Data-Science
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`,
+
+    "timeline": `
+🕐 JOURNEY TIMELINE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📅 2023 - THE BEGINNING:
+   ├── 🎯 Started Cybersecurity Studies
+   ├── 💻 First Python program: "Hello, World!"
+   ├── 🔍 Discovered passion for ethical hacking
+   └── 📚 Built foundation in networking & systems
+
+📅 2024 - SKILL DEVELOPMENT:
+   └── 🏆 1st runnerup Inter-College Hackathon
+
+📅 2025 - CURRENT FOCUS:
+   ├── 📊 Advanced cybersecurity research
+   ├── 🛡️  Building professional toolkit
+   ├── 🎓 Preparing for industry certifications
+   ├── 🚀 Contributing to open source projects
+   └── 💼 Seeking internship opportunities
+
+🔮 FUTURE GOALS:
+   ├── 🎯 2025: Complete CEH certification
+   ├── 🌟 2026: Land cybersecurity internship
+   ├── 🚀 2027: Become penetration testing specialist
+   └── 🌍 Long-term: Lead security team, make impact
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`,
+
+    "matrix": `
+🔴 ENTERING THE MATRIX...
+
+    ██╗    ██╗ ███████╗ ██╗      ██████╗ ██████╗ ███╗   ███╗ ███████╗
+    ██║    ██║ ██╔════╝ ██║     ██╔════╝██╔═══██╗████╗ ████║ ██╔════╝
+    ██║ █╗ ██║ █████╗   ██║     ██║     ██║   ██║██╔████╔██║ █████╗  
+    ██║███╗██║ ██╔══╝   ██║     ██║     ██║   ██║██║╚██╔╝██║ ██╔══╝  
+    ╚███╔███╔╝ ███████╗ ███████╗╚██████╗╚██████╔╝██║ ╚═╝ ██║ ███████╗
+     ╚══╝╚══╝  ╚══════╝ ╚══════╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝ ╚══════╝
+
+         ████████╗ ██████╗     ████████╗██╗  ██╗███████╗
+         ╚══██╔══╝██╔═══██╗    ╚══██╔══╝██║  ██║██╔════╝
+            ██║   ██║   ██║       ██║   ███████║█████╗  
+            ██║   ██║   ██║       ██║   ██╔══██║██╔══╝  
+            ██║   ╚██████╔╝       ██║   ██║  ██║███████╗
+            ╚═╝    ╚═════╝        ╚═╝   ╚═╝  ╚═╝╚══════╝
+
+                        ███╗   ███╗ █████╗ ████████╗██████╗ ██╗██╗  ██╗
+                        ████╗ ████║██╔══██╗╚══██╔══╝██╔══██╗██║╚██╗██╔╝
+                        ██╔████╔██║███████║   ██║   ██████╔╝██║ ╚███╔╝ 
+                        ██║╚██╔╝██║██╔══██║   ██║   ██╔══██╗██║ ██╔██╗ 
+                        ██║ ╚═╝ ██║██║  ██║   ██║   ██║  ██║██║██╔╝ ██╗
+                        ╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝╚═╝  ╚═╝
+
+🟢 MATRIX MODE ACTIVATED 🟢
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+You have successfully entered the digital realm where:
+┌─ Reality is code, code is reality
+├─ Every pixel tells a story
+├─ Bugs become features in the matrix
+└─ The only limit is your imagination
+
+🔢 DIGITAL RAIN FALLING... 01001000 01100101 01101100 01101100 01101111
+🌐 CONNECTION TO CYBERSPACE: ESTABLISHED
+🔐 ENCRYPTION LEVEL: QUANTUM
+🚀 SYSTEM STATUS: ALL SYSTEMS GO
+
+Type 'exit' to return to normal terminal mode
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`,
+
+    "whoami": `
+┌─ SYSTEM USER IDENTIFICATION ─┐
+│ User: brabim                 │
+│ Role: cyber_security_student │
+│ Level: Advanced              │
+│ Status: Online               │
+│ Location: ~/portfolio        │
+└──────────────────────────────┘`,
+
+    "ls": `
+drwxr-xr-x 2 brabim brabim 4096 Aug 24 2025 projects/
+drwxr-xr-x 2 brabim brabim 4096 Aug 24 2025 skills/
+drwxr-xr-x 2 brabim brabim 4096 Aug 24 2025 achievements/
+-rw-r--r-- 1 brabim brabim 2048 Aug 24 2025 contact.txt
+-rw-r--r-- 1 brabim brabim 1024 Aug 24 2025 resume.pdf
+-rw-r--r-- 1 brabim brabim  512 Aug 24 2025 README.md`,
+
+    "pwd": "~/portfolio/brabim-cybersec-terminal",
+
+    "date": new Date().toLocaleString(),
+
+    "uname": `Linux brabim-cybersec 5.15.0-cyber #1 SMP PREEMPT Tue Aug 24 2025
+        x86_64 x86_64 x86_64 GNU/Linux`,
+
+    "neofetch": `
+                     ██████████████                    brabim@cybersec-terminal
+                   ██                ██                ────────────────────────
+                 ██                    ██              OS: Brabim Linux x86_64
+               ██          ████          ██            Host: Brabim Portfolio 
+             ██          ██    ██          ██          Kernel: 5.15.0-cyber
+           ██          ██        ██          ██        Uptime: 2 days, 14 hours
+         ██          ██            ██          ██      Shell: brabim-shell 2.1
+       ██          ██                ██          ██    Terminal:cyber-terminal
+     ██          ██                    ██          ██  CPU: AMD-ryzen 5 7350U
+   ██          ██                        ██          ██GPU:AMD Radeon Graphics
+ ██          ██                            ██          ██Memory: 2.1GiB / 7.1GiB
+                                                      Theme: Matrix Green
+                     🔐 CYBER SECURE 🔐               Icons: Hacker Pack [GTK3]`
+  };
+
+  // List of random easter eggs
+  const easterEggs = {
+    "sudo rm -rf /": "Nice try! 😄 But I'm not falling for that one!",
+    "hack nasa": "🚫 Sorry, I only hack ethically! Try 'help' instead.",
+    "hack facebook": "🛡️ I'm a white hat hacker! Let's focus on learning instead.",
+    "password": "🔐 The best password is the one you don't tell anyone!",
+    "42": "🌌 The answer to the ultimate question of life, universe, and everything!",
+    "hello world": "👋 Hello there! Welcome to my cyber realm!",
+    "ping google.com": "PING google.com (8.8.8.8): 56 data bytes\n64 bytes from 8.8.8.8: icmp_seq=0 ttl=55 time=12.345 ms",
+    "exit": "👋 Thanks for visiting! Type 'help' to continue exploring.",
+    "sudo": "🔑 brabim is not in the sudoers file. This incident will be reported.",
+    "cat /etc/passwd": "🐱 Nice try! But my secrets are better protected than that!"
+  };
+
+  // Advanced command processing function
+  function processCommand(cmd) {
+    const command = cmd.toLowerCase().trim();
+    
+    // Check for easter eggs first
+    if (easterEggs[command]) {
+      return easterEggs[command];
+    }
+    
+    // Check main commands
+    if (commands[command]) {
+      return commands[command];
+    }
+    
+    // Handle partial matches and suggestions
+    const suggestions = Object.keys(commands).filter(key => 
+      key.includes(command) || command.includes(key.split('-')[0])
+    );
+    
+    if (suggestions.length > 0) {
+      return `❌ Command '${cmd}' not found. Did you mean: ${suggestions.join(', ')}?`;
+    }
+    
+    // Default error message with style
+    return `
+🚫 COMMAND NOT RECOGNIZED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Command: '${cmd}'
+Status: ❌ Not Found
+
+💡 SUGGESTIONS:
+   • Type 'help' to see all available commands
+   • Commands are case-insensitive
+   • Use tab completion (coming soon!)
+   • Check the navigation links above
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
+  }
+
+  // Execute command function
+  function runCommand(command) {
+    if (!command) return;
+    
+    // Add command to history
+    commandHistory.push(command);
+    historyIndex = commandHistory.length;
+    
+    // Display command being executed
+    addToTerminal(`
+┌──(brabim@cybersec)-[~/portfolio]
+└─$ ${command}`, 'text-blue-400');
+    
+    // Special handling for clear command
+    if (command.toLowerCase().trim() === 'clear') {
+      clearTerminal();
+      return;
+    }
+    
+    // Process and display result
+    const result = processCommand(command);
+    addToTerminal(result, 'text-green-300');
+    
+    // Clear input
+    input.value = '';
+    
+    // Scroll to bottom
+    terminal.scrollTop = terminal.scrollHeight;
+  }
+
+  // Add content to terminal
+  function addToTerminal(content, colorClass = 'text-green-300') {
+    const output = document.createElement('div');
+    output.className = colorClass;
+    output.textContent = content;
+    terminal.appendChild(output);
+    terminal.scrollTop = terminal.scrollHeight;
+  }
+
+  // Clear terminal function
+  function clearTerminal() {
+    terminal.innerHTML = `╔═══════════════════════════════════════════════════════════════╗
+║                  🚀 BRABIM'S CYBER PORTFOLIO 🚀              ║
+║                                                               ║
+║  ┌─ SYSTEM STATUS ────────────────────────────────────────┐   ║
+║  │ 🟢 All systems operational                             │   ║
+║  │ 🔐 Security protocols: ACTIVE                          │   ║  
+║  │ 💻 Terminal access: GRANTED                            │   ║
+║  │ 🌐 Network status: CONNECTED                           │   ║
+║  └─────────────────────────────────────────────────────────┘   ║
+║                                                               ║
+║  Welcome, visitor! Type 'help' to explore my digital realm   ║
+╚═══════════════════════════════════════════════════════════════╝
+`;
+  }
+
+  // Event listeners for input handling
+  input.addEventListener('keydown', function(e) {
+    switch(e.key) {
+      case 'Enter':
+        e.preventDefault();
+        runCommand(input.value);
+        break;
+        
+      case 'ArrowUp':
+        e.preventDefault();
+        if (historyIndex > 0) {
+          historyIndex--;
+          input.value = commandHistory[historyIndex] || '';
+        }
+        break;
+        
+      case 'ArrowDown':
+        e.preventDefault();
+        if (historyIndex < commandHistory.length - 1) {
+          historyIndex++;
+          input.value = commandHistory[historyIndex] || '';
+        } else {
+          historyIndex = commandHistory.length;
+          input.value = '';
+        }
+        break;
+        
+      case 'Tab':
+        e.preventDefault();
+        // Auto-complete functionality (basic)
+        const currentValue = input.value.toLowerCase();
+        const matches = Object.keys(commands).filter(cmd => 
+          cmd.startsWith(currentValue)
+        );
+        if (matches.length === 1) {
+          input.value = matches[0];
+        }
+        break;
+    }
+  });
+
+  // Create animated background particles
+  function createParticles() {
+    const particles = document.getElementById('particles');
+    const particleCount = 50;
+    
+    for (let i = 0; i < particleCount; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.style.left = Math.random() * 100 + '%';
+      particle.style.top = Math.random() * 100 + '%';
+      particle.style.animationDelay = Math.random() * 6 + 's';
+      particle.style.animationDuration = (6 + Math.random() * 4) + 's';
+      particles.appendChild(particle);
+    }
+  }
+
+  // Initialize the application
+  function init() {
+    createParticles();
+    input.focus();
+    
+    // Welcome message with typing effect
+    setTimeout(() => {
+      addToTerminal('\n🎉 Welcome to Brabim\'s Cybersecurity Portfolio!', 'text-cyan-400');
+      addToTerminal('💡 Pro tip: Try typing "help" to get started!\n', 'text-yellow-400');
+    }, 1000);
+  }
+
+  // Auto-focus input when clicking anywhere in terminal
+  terminal.addEventListener('click', () => {
+    input.focus();
+  });
+
+  // Initialize when page loads
+  document.addEventListener('DOMContentLoaded', init);
+
+  // Keep input focused
+  setInterval(() => {
+    if (document.activeElement !== input) {
+      input.focus();
+    }
+  }, 100);
+</script>
+
 </body>
 </html>
